@@ -9,6 +9,62 @@ SurakshaMitra HealthGuard is a next-generation Progressive Web App (PWA) designe
 
 ---
 
+## 🏗️ Architecture
+
+The application follows a modular architecture where the React Frontend communicates with the Google GenAI SDK via a dedicated Service Layer.
+
+```mermaid
+graph TD
+    User((User))
+    
+    subgraph Frontend [React PWA Application]
+        UI[Main Interface]
+        Context[App Context / State]
+        
+        subgraph Modules
+            Dash[Dashboard]
+            Mental[Mental Wellness]
+            Phys[Physical Body]
+            Med[Medical Assistant]
+            Pers[Personality Hub]
+        end
+    end
+
+    subgraph ServiceLayer [Services]
+        GS[GeminiService.ts]
+    end
+
+    subgraph GoogleAI [Google Gemini API]
+        G3P["gemini-3-pro-preview
+(Reasoning and Vision)"]
+        Flash["gemini-2.5-flash
+(Fast Text and JSON)"]
+        TTS["gemini-2.5-flash-preview-tts
+(Speech Synthesis)"]
+        Img["gemini-3-pro-image-preview
+(Image Generation)"]
+        Maps[Google Maps Grounding]
+    end
+
+    User --> UI
+    UI --> Context
+    UI --> Modules
+
+    Dash --> GS
+    Mental --> GS
+    Phys --> GS
+    Med --> GS
+    Pers --> GS
+
+    GS --> Flash
+    GS --> G3P
+    GS --> TTS
+    GS --> Img
+    GS --> Maps
+
+```
+
+----
 ## 🌟 Key Features
 
 ### 1. 📊 Holistic Dashboard
