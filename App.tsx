@@ -51,7 +51,9 @@ import {
   History,
   Droplets,
   GlassWater,
-  Coffee
+  Coffee,
+  Globe,
+  Github
 } from 'lucide-react';
 import { 
   BarChart, 
@@ -66,6 +68,10 @@ import {
 } from 'recharts';
 import { GeminiService } from './services/geminiService';
 import { User, Gender, MoodEntry, Appointment, WorkoutPlan, HealthStats, ChatMessage } from './types';
+
+// --- CONFIGURATION ---
+// REPLACE THIS with your actual deployed website URL or GitHub Repo URL
+const APP_WEBSITE_URL = "https://github.com/your-username/surakshamitra-healthguard";
 
 // --- Types Update ---
 // Extending HealthStats to include water intake
@@ -551,8 +557,18 @@ const WelcomeScreen: React.FC = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-8 text-xs text-slate-500 font-bold tracking-widest uppercase opacity-80 z-20 bg-white/50 dark:bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
-        HealthGuard • Created by Supriya
+      <div className="absolute bottom-8 z-20 flex flex-col items-center gap-2">
+         <div className="text-xs text-slate-500 font-bold tracking-widest uppercase opacity-80 bg-white/50 dark:bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm">
+            HealthGuard • Created by Supriya
+         </div>
+         <a 
+           href={APP_WEBSITE_URL} 
+           target="_blank" 
+           rel="noopener noreferrer"
+           className="flex items-center gap-2 text-xs font-bold text-primary hover:text-blue-600 bg-white/80 dark:bg-black/80 px-4 py-1.5 rounded-full shadow-sm hover:scale-105 transition-all"
+         >
+            <Github size={12} /> Repo / Website
+         </a>
       </div>
 
       <style>{`
@@ -1116,39 +1132,75 @@ const MedicalAssistant: React.FC = () => {
                               </div>
                           </div>
                         ) : (
-                          <div className="flex flex-col h-full gap-6">
-                              <div className="relative flex-1 bg-black/90 rounded-2xl overflow-hidden flex items-center justify-center group min-h-[400px]">
-                                <div className="transition-transform duration-200 ease-out max-h-full max-w-full" style={{ transform: `scale(${zoom})` }} > <img src={rxImage} alt="Scan" className="max-h-[600px] w-auto object-contain" /> </div>
-                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-md border border-white/20 p-2 rounded-xl flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity"> <button onClick={() => setZoom(z => Math.max(0.5, z - 0.5))} className="p-2 text-white hover:bg-white/20 rounded-lg"> <ZoomOut size={20} /> </button> <button onClick={() => setZoom(1)} className="p-2 text-white hover:bg-white/20 rounded-lg font-mono text-xs flex items-center"> {Math.round(zoom * 100)}% </button> <button onClick={() => setZoom(z => Math.min(3, z + 0.5))} className="p-2 text-white hover:bg-white/20 rounded-lg"> <ZoomIn size={20} /> </button> <div className="w-px bg-white/20 mx-1"></div> <button onClick={() => {setRxImage(null); setRxAnalysis(''); setZoom(1)}} className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg" title="Clear"> <RotateCcw size={20} /> </button> </div>
+                          <div className="flex flex-col lg:flex-row gap-8 h-full">
+                              <div className="flex-1 flex flex-col items-center justify-center bg-black/5 rounded-2xl p-4 relative overflow-hidden group">
+                                  <img src={rxImage} className="max-h-96 object-contain rounded-lg shadow-lg transition-transform duration-300" style={{ transform: `scale(${zoom})` }} alt="Medical Scan"/>
+                                  <div className="absolute bottom-4 flex gap-2">
+                                      <button onClick={() => setZoom(z => z + 0.5)} className="p-2 bg-white/80 rounded-full shadow hover:bg-white"><ZoomIn size={20}/></button>
+                                      <button onClick={() => setZoom(z => Math.max(1, z - 0.5))} className="p-2 bg-white/80 rounded-full shadow hover:bg-white"><ZoomOut size={20}/></button>
+                                      <button onClick={() => setRxImage(null)} className="p-2 bg-white/80 rounded-full shadow hover:bg-white text-red-500"><Trash2 size={20}/></button>
+                                  </div>
                               </div>
-                              <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700 overflow-y-auto max-h-[300px]">
-                                  <h3 className="font-bold text-lg mb-4 flex items-center gap-2"> <Brain className="text-primary" size={20} /> Analysis Result </h3>
-                                  {analyzingRx ? ( <div className="space-y-4 animate-pulse"> <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4"></div> <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-full"></div> <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-5/6"></div> <div className="h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2"></div> </div> ) : ( <div className="prose dark:prose-invert text-sm"> <p className="whitespace-pre-line leading-relaxed">{rxAnalysis}</p> </div> )}
+                              <div className="flex-1 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 overflow-y-auto">
+                                  <h3 className="font-bold text-lg mb-4 flex items-center gap-2"> <Bot size={20} className="text-primary"/> Analysis Results </h3>
+                                  {analyzingRx ? (
+                                      <div className="space-y-4">
+                                          <div className="h-4 bg-gray-100 dark:bg-slate-700 rounded w-3/4 animate-pulse"></div>
+                                          <div className="h-4 bg-gray-100 dark:bg-slate-700 rounded w-1/2 animate-pulse"></div>
+                                          <div className="h-4 bg-gray-100 dark:bg-slate-700 rounded w-full animate-pulse"></div>
+                                      </div>
+                                  ) : (
+                                      <div className="prose dark:prose-invert text-sm"> {rxAnalysis} </div>
+                                  )}
                               </div>
                           </div>
                         )}
                     </div>
                 )}
-                
+
                 {activeTab === 'appointments' && (
-                    <div className="h-full flex flex-col">
-                        <div className="flex justify-between items-center mb-6"> <h2 className="text-2xl font-black">Timeline</h2> <button onClick={() => setShowApptForm(!showApptForm)} className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl font-bold hover:bg-blue-600 shadow-lg shadow-blue-200 dark:shadow-none transition-all"> {showApptForm ? <X size={18} /> : <Plus size={18} />} {showApptForm ? 'Close' : 'New Appointment'} </button> </div>
-                        {showApptForm && (
-                            <form onSubmit={handleAddAppt} className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-700 mb-6 animate-fade-in relative z-10">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <div> <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Doctor Name</label> <input required type="text" value={newAppt.doctorName} onChange={e => setNewAppt({...newAppt, doctorName: e.target.value})} className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 dark:bg-slate-900 dark:border-slate-700 outline-none focus:ring-2 focus:ring-primary" placeholder="Dr. Smith" /> </div>
-                                    <div> <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Specialty</label> <input type="text" value={newAppt.specialty} onChange={e => setNewAppt({...newAppt, specialty: e.target.value})} className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 dark:bg-slate-900 dark:border-slate-700 outline-none focus:ring-2 focus:ring-primary" placeholder="Cardiologist" /> </div>
-                                    <div> <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Date & Time</label> <input required type="datetime-local" value={newAppt.date} onChange={e => setNewAppt({...newAppt, date: e.target.value})} className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 dark:bg-slate-900 dark:border-slate-700 outline-none focus:ring-2 focus:ring-primary" /> </div>
-                                    <div> <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Notes</label> <input type="text" value={newAppt.notes} onChange={e => setNewAppt({...newAppt, notes: e.target.value})} className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 dark:bg-slate-900 dark:border-slate-700 outline-none focus:ring-2 focus:ring-primary" placeholder="Bring lab reports..." /> </div>
-                                    <div className="md:col-span-2"> <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Reminder</label> <select value={newAppt.reminderMinutes} onChange={e => setNewAppt({...newAppt, reminderMinutes: parseInt(e.target.value)})} className="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 dark:bg-slate-900 dark:border-slate-700 outline-none focus:ring-2 focus:ring-primary" > <option value="0">No Reminder</option> <option value="60">1 Hour Before</option> <option value="120">2 Hours Before</option> <option value="1440">24 Hours Before</option> </select> </div>
+                  <div className="h-full flex flex-col">
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="font-bold text-lg">Upcoming Visits</h3>
+                        <button onClick={() => setShowApptForm(!showApptForm)} className="bg-primary hover:bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-colors"> <Plus size={16} /> New Appointment </button>
+                      </div>
+                      
+                      {showApptForm && (
+                        <form onSubmit={handleAddAppt} className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 mb-6 animate-fade-in">
+                           <div className="grid grid-cols-2 gap-4 mb-4">
+                              <input placeholder="Doctor Name" className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border-none outline-none focus:ring-1 focus:ring-primary" value={newAppt.doctorName} onChange={e => setNewAppt({...newAppt, doctorName: e.target.value})} />
+                              <input placeholder="Specialty (e.g. Cardio)" className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border-none outline-none focus:ring-1 focus:ring-primary" value={newAppt.specialty} onChange={e => setNewAppt({...newAppt, specialty: e.target.value})} />
+                              <input type="datetime-local" className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border-none outline-none focus:ring-1 focus:ring-primary" value={newAppt.date} onChange={e => setNewAppt({...newAppt, date: e.target.value})} />
+                              <select className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border-none outline-none focus:ring-1 focus:ring-primary" value={newAppt.reminderMinutes} onChange={e => setNewAppt({...newAppt, reminderMinutes: parseInt(e.target.value)})}>
+                                <option value="0">No Reminder</option>
+                                <option value="60">1 Hour Before</option>
+                                <option value="1440">1 Day Before</option>
+                              </select>
+                           </div>
+                           <input placeholder="Notes" className="w-full p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border-none outline-none focus:ring-1 focus:ring-primary mb-4" value={newAppt.notes} onChange={e => setNewAppt({...newAppt, notes: e.target.value})} />
+                           <button type="submit" className="w-full bg-slate-900 dark:bg-slate-700 text-white py-3 rounded-xl font-bold">Save Appointment</button>
+                        </form>
+                      )}
+
+                      <div className="space-y-4 overflow-y-auto pr-2">
+                        {appointments.map(appt => (
+                          <div key={appt.id} className="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 flex justify-between items-center group">
+                             <div className="flex gap-4 items-center">
+                                <div className="bg-blue-50 dark:bg-slate-700 p-3 rounded-xl text-primary font-bold text-center min-w-[60px]">
+                                   <div className="text-xs uppercase">{new Date(appt.date).toLocaleString('default', { month: 'short' })}</div>
+                                   <div className="text-xl">{new Date(appt.date).getDate()}</div>
                                 </div>
-                                <button type="submit" className="mt-6 w-full bg-primary text-white py-3 rounded-xl hover:bg-blue-600 font-bold tracking-wide"> Confirm Schedule </button>
-                            </form>
-                        )}
-                        <div className="flex-1 overflow-y-auto space-y-4">
-                            {appointments.length === 0 ? ( <div className="text-center py-20"> <div className="inline-block p-6 bg-gray-100 dark:bg-slate-800 rounded-full mb-4"> <Calendar size={48} className="text-gray-300 dark:text-slate-600" /> </div> <p className="text-gray-400 font-medium">No upcoming appointments</p> </div> ) : ( appointments.map(appt => ( <div key={appt.id} className="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 flex justify-between items-center group hover:shadow-md transition-all"> <div className="flex items-start gap-4"> <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl text-primary font-bold text-center min-w-[70px]"> <div className="text-xs uppercase">{new Date(appt.date).toLocaleString('default', { month: 'short' })}</div> <div className="text-2xl">{new Date(appt.date).getDate()}</div> </div> <div> <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100">{appt.doctorName}</h3> <p className="text-primary font-medium text-sm mb-1">{appt.specialty}</p> <div className="flex items-center gap-3 text-xs text-gray-500 mt-1"> <div className="flex items-center gap-1"> <Clock size={12} /> {new Date(appt.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} </div> {appt.reminderMinutes && ( <div className="flex items-center gap-1 text-orange-500 font-bold bg-orange-50 dark:bg-orange-900/20 px-2 py-0.5 rounded-full"> <Bell size={10} /> {appt.reminderMinutes === 1440 ? '1d' : `${appt.reminderMinutes / 60}h`} </div> )} {appt.notes && <span className="truncate max-w-[150px] italic">"{appt.notes}"</span>} </div> </div> </div> <button onClick={() => handleDeleteAppt(appt.id)} className="text-gray-300 hover:text-red-500 transition-colors p-3 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl" > <Trash2 size={20} /> </button> </div> )) )}
-                        </div>
-                    </div>
+                                <div>
+                                   <h4 className="font-bold text-lg">{appt.doctorName}</h4>
+                                   <p className="text-gray-500 text-sm">{appt.specialty} • {new Date(appt.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+                                   {appt.notes && <p className="text-gray-400 text-xs mt-1 italic">"{appt.notes}"</p>}
+                                </div>
+                             </div>
+                             <button onClick={() => handleDeleteAppt(appt.id)} className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all p-2"> <Trash2 size={18} /> </button>
+                          </div>
+                        ))}
+                      </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -1156,70 +1208,132 @@ const MedicalAssistant: React.FC = () => {
     );
 };
 
-// ... Layout and Default App remains essentially same, just ensuring correct context usage ...
-const Layout: React.FC = () => {
-    const { darkMode, toggleDarkMode, logout, user } = useAppContext();
-    const location = useLocation();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const NavItem = ({ to, icon: Icon, label }: { to: string; icon: any; label: string }) => { const isActive = location.pathname === to; return ( <NavLink to={to} onClick={() => setSidebarOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all font-medium ${isActive ? 'bg-primary text-white shadow-lg shadow-primary/30' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-primary'}`} > <Icon size={20} /> <span>{label}</span> </NavLink> ); };
+// --- Main App Component ---
+
+const Sidebar = () => {
+  const { user, logout, darkMode, toggleDarkMode } = useAppContext();
+  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Close sidebar on route change (mobile)
+  useEffect(() => setIsOpen(false), [location]);
+
+  const NavItem = ({ to, icon: Icon, label }: { to: string, icon: any, label: string }) => (
+    <NavLink 
+      to={to} 
+      className={({ isActive }) => `flex items-center gap-3 p-3.5 rounded-xl font-bold transition-all duration-200 ${isActive ? 'bg-primary text-white shadow-lg shadow-blue-200 dark:shadow-none translate-x-1' : 'text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary'}`}
+    >
+      <Icon size={20} /> <span className="text-sm">{label}</span>
+    </NavLink>
+  );
+
+  return (
+    <>
+      {/* Mobile Toggle */}
+      <div className="md:hidden fixed top-0 left-0 w-full bg-white/80 dark:bg-darkBackground/90 backdrop-blur-md z-50 px-6 py-4 flex justify-between items-center border-b border-gray-100 dark:border-slate-800">
+          <div className="flex items-center gap-2 text-primary font-black text-lg"> <Heart className="fill-current" /> HealthGuard </div>
+          <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-slate-600 dark:text-slate-300"> {isOpen ? <X /> : <Menu />} </button>
+      </div>
+
+      {/* Sidebar Container */}
+      <aside className={`fixed top-0 left-0 h-full w-72 bg-white dark:bg-darkSurface border-r border-gray-100 dark:border-slate-800 z-40 transition-transform duration-300 ease-in-out md:translate-x-0 ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}`}>
+         <div className="p-8 pb-4">
+             <div className="flex items-center gap-3 text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-1"> <Heart className="text-primary fill-primary" size={28} /> HealthGuard </div>
+             <p className="text-xs text-gray-400 font-medium pl-10 tracking-widest uppercase">By SurakshaMitra</p>
+         </div>
+
+         <div className="px-4 py-2 space-y-2">
+             <div className="text-xs font-bold text-gray-400 uppercase px-4 py-2 mt-4">Wellness</div>
+             <NavItem to="/dashboard" icon={Activity} label="Dashboard" />
+             <NavItem to="/mental" icon={Brain} label="Mental Sanctuary" />
+             <NavItem to="/physical" icon={Dumbbell} label="Body & Focus" />
+             
+             <div className="text-xs font-bold text-gray-400 uppercase px-4 py-2 mt-6">Medical AI</div>
+             <NavItem to="/medical" icon={Stethoscope} label="Medical Assistant" />
+             <NavItem to="/personality" icon={Fingerprint} label="Personality Hub" />
+         </div>
+
+         <div className="absolute bottom-0 w-full p-4 border-t border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50">
+             <div className="flex items-center gap-3 mb-4 px-2">
+                 <div className="w-10 h-10 bg-gradient-to-tr from-primary to-purple-500 rounded-full flex items-center justify-center text-white font-bold"> {user?.name.charAt(0)} </div>
+                 <div className="flex-1 overflow-hidden"> 
+                    <p className="font-bold text-sm truncate dark:text-white">{user?.name}</p> 
+                    <p className="text-xs text-gray-500 truncate">{user?.email}</p> 
+                 </div>
+                 <button onClick={toggleDarkMode} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"> {darkMode ? <Sun size={16} /> : <Moon size={16} />} </button>
+             </div>
+             
+             <a href={APP_WEBSITE_URL} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full p-2.5 mb-2 rounded-xl border border-gray-200 dark:border-slate-700 text-xs font-bold text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-slate-800 transition-colors group">
+                <Github size={14} className="group-hover:text-black dark:group-hover:text-white transition-colors"/> GitHub Repo
+             </a>
+
+             <button onClick={logout} className="flex items-center gap-2 w-full p-2.5 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 text-xs font-bold transition-colors"> <LogOut size={16} /> Sign Out </button>
+         </div>
+      </aside>
+    </>
+  );
+};
+
+const AppContent: React.FC = () => {
+    const { user } = useAppContext();
     return (
-        <div className={`min-h-screen flex ${darkMode ? 'dark' : ''}`}>
-            <GlobalAiChat />
-            <HydrationReminder />
-            {sidebarOpen && ( <div className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm" onClick={() => setSidebarOpen(false)}></div> )}
-            <aside className={`fixed lg:sticky top-0 h-screen w-72 bg-white/80 dark:bg-darkSurface/80 backdrop-blur-md border-r border-gray-100 dark:border-slate-800 z-50 transform transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-                <div className="p-8 flex justify-between items-center"> <span className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent flex items-center gap-2"> <Heart className="fill-primary text-primary" size={28} /> HealthGuard </span> <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-gray-500"> <X /> </button> </div>
-                <nav className="px-6 space-y-3 mt-4"> 
-                    <NavItem to="/" icon={Activity} label="Dashboard" /> 
-                    <NavItem to="/personality" icon={Fingerprint} label="Personality Hub" />
-                    <NavItem to="/mental" icon={Brain} label="Mental Wellness" /> 
-                    <NavItem to="/physical" icon={Dumbbell} label="Physical & Focus" /> 
-                    <NavItem to="/medical" icon={Stethoscope} label="Medical Assist" /> 
-                </nav>
-                <div className="absolute bottom-0 w-full p-6 border-t border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-black/10"> <div className="flex items-center gap-4 mb-4"> <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center font-bold text-lg shadow-lg"> {user?.name.charAt(0)} </div> <div className="overflow-hidden"> <p className="text-sm font-bold text-gray-800 dark:text-gray-200 truncate">{user?.name}</p> <p className="text-xs text-primary font-bold flex items-center gap-1"> <Award size={12}/> {user?.coins} Coins </p> </div> </div> <button onClick={logout} className="flex items-center gap-3 px-4 py-3 w-full text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl font-bold transition-colors"> <LogOut size={18} /> Logout </button> </div>
-            </aside>
-            <main className="flex-1 bg-slate-50/80 dark:bg-darkBackground/80 min-h-screen">
-                <header className="h-20 bg-white/80 dark:bg-darkSurface/80 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 flex items-center justify-between px-8 sticky top-0 z-30"> <button onClick={() => setSidebarOpen(true)} className="lg:hidden mr-4"> <Menu /> </button> <div className="hidden md:block"> <h1 className="text-xl font-bold text-gray-800 dark:text-white capitalize">{location.pathname === '/' ? 'Overview' : location.pathname.substring(1).replace('-', ' ')}</h1> </div> <div className="flex-1"></div> <div className="flex items-center gap-6"> <div className="hidden md:flex items-center text-xs font-bold text-gray-500 gap-2 bg-gray-100 dark:bg-slate-800 px-3 py-1.5 rounded-full"> <CloudSun size={14} className="text-orange-400" /> 24°C • AQI 45 </div> <button onClick={toggleDarkMode} className="p-2.5 rounded-full bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"> {darkMode ? <Sun size={20} /> : <Moon size={20} />} </button> </div> </header>
-                <div className="p-8 max-w-7xl mx-auto">
-                    <Routes> 
-                        <Route path="/" element={<Dashboard />} /> 
-                        <Route path="/personality" element={<PersonalityHub />} />
-                        <Route path="/mental" element={<MentalWellness />} /> 
-                        <Route path="/physical" element={<PhysicalWellness />} /> 
-                        <Route path="/medical" element={<MedicalAssistant />} /> 
-                        <Route path="*" element={<Navigate to="/" />} /> 
-                    </Routes>
-                </div>
-            </main>
-        </div>
+        <HashRouter>
+            <div className="min-h-screen text-slate-800 dark:text-slate-100 font-sans selection:bg-primary/30">
+                <NeuronBackground />
+                {!user ? (
+                   <Routes> <Route path="*" element={<WelcomeScreen />} /> </Routes>
+                ) : (
+                   <div className="md:pl-72 transition-all duration-300">
+                      <Sidebar />
+                      <main className="p-4 md:p-8 pt-20 md:pt-8 max-w-7xl mx-auto">
+                         <Routes>
+                            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/mental" element={<MentalWellness />} />
+                            <Route path="/physical" element={<PhysicalWellness />} />
+                            <Route path="/medical" element={<MedicalAssistant />} />
+                            <Route path="/personality" element={<PersonalityHub />} />
+                            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                         </Routes>
+                      </main>
+                      <GlobalAiChat />
+                      <HydrationReminder />
+                   </div>
+                )}
+            </div>
+        </HashRouter>
     );
 };
 
 export default function App() {
-  const [user, setUser] = useState<User | null>(null);
-  const [darkMode, setDarkMode] = useState(false);
-  const [stats, setStats] = useState<ExtendedHealthStats>({ 
-    steps: 4520, 
-    stepGoal: 10000, 
-    sleepHours: 7.2, 
-    screenTimeHours: 3.5,
-    waterIntake: 0,
-    waterGoal: 8
-  });
-  
-  const login = (u: User) => setUser(u);
-  const logout = () => setUser(null);
-  const toggleDarkMode = () => { setDarkMode(!darkMode); document.documentElement.classList.toggle('dark'); };
-  const updateStats = (newStats: Partial<ExtendedHealthStats>) => { setStats(prev => ({...prev, ...newStats})); };
-  const addCoins = (amount: number) => { if(user) { setUser({...user, coins: user.coins + amount}); } };
-  
-  const logWater = () => {
-    setStats(prev => ({
-        ...prev,
-        waterIntake: prev.waterIntake + 1
-    }));
-    addCoins(1); // Reward for hydration
-  };
+    const [user, setUser] = useState<User | null>(null);
+    const [stats, setStats] = useState<ExtendedHealthStats>({ steps: 5430, stepGoal: 10000, sleepHours: 7.5, screenTimeHours: 4.2, waterIntake: 3, waterGoal: 8 });
+    const [darkMode, setDarkMode] = useState(false);
 
-  return ( <AppContext.Provider value={{ user, login, logout, darkMode, toggleDarkMode, stats, updateStats, addCoins, logWater }}> <HashRouter> <NeuronBackground /> {user ? <Layout /> : <WelcomeScreen />} </HashRouter> </AppContext.Provider> );
+    useEffect(() => {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setDarkMode(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (darkMode) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+    }, [darkMode]);
+
+    const login = (u: User) => setUser(u);
+    const logout = () => setUser(null);
+    const toggleDarkMode = () => setDarkMode(!darkMode);
+    const updateStats = (newStats: Partial<ExtendedHealthStats>) => setStats(prev => ({ ...prev, ...newStats }));
+    const addCoins = (amount: number) => { if (user) setUser({ ...user, coins: user.coins + amount }); };
+    const logWater = () => {
+        setStats(prev => ({ ...prev, waterIntake: prev.waterIntake + 1 }));
+        if (user) setUser(prev => prev ? ({ ...prev, coins: prev.coins + 2 }) : null); 
+    };
+
+    return (
+        <AppContext.Provider value={{ user, login, logout, darkMode, toggleDarkMode, stats, updateStats, addCoins, logWater }}>
+            <AppContent />
+        </AppContext.Provider>
+    );
 }
