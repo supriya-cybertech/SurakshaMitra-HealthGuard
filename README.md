@@ -1,5 +1,8 @@
 # SurakshaMitra HealthGuard 🛡️
 
+[![Live Demo](https://img.shields.io/badge/demo-online-green.svg)](https://your-deployed-app-link.com)
+**[👉 Click here to view the Live Demo](https://your-deployed-app-link.com)**
+
 **Your Intelligent AI Companion for Mind, Body, and Soul.**
 
 SurakshaMitra HealthGuard is a next-generation Progressive Web App (PWA) designed to be your holistic health partner. Powered by Google's Gemini 3 Pro and Gemini 2.5 Flash models, it combines advanced AI reasoning with intuitive wellness tracking to support your physical health, mental well-being, and medical needs.
