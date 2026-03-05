@@ -1,0 +1,8 @@
+{
+  "name": "SurakshaMitra HealthGuard",
+  "description": "A universal health & wellness companion powered by AI, featuring mental support, physical tracking, and medical assistance.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ]
+}
