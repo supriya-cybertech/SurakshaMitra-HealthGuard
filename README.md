@@ -1,5 +1,20 @@
-# 🛡️ Surakshamitra Healthguard
-### AI-Powered Digital Health Companion
+<!-- ===================================================== -->
+<!--                   ANIMATED HEADER                     -->
+<!-- ===================================================== -->
+
+<h1 align="center">🛡️ Surakshamitra Healthguard</h1>
+<h3 align="center">AI-Powered Digital Health Companion</h3>
+
+<p align="center">
+An intelligent health ecosystem combining <b>AI medical assistance</b>, 
+<b>fitness tracking</b>, and <b>mental wellness analysis</b>.
+</p>
+
+<p align="center">
+<img src="https://readme-typing-svg.herokuapp.com/?lines=AI+Health+Companion;Gemini+Powered+Medical+Assistant;Mental+Wellness+AI;Smart+Workout+Generator;Future+of+Digital+Healthcare&center=true&width=500&height=45">
+</p>
+
+---
 
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 ![React](https://img.shields.io/badge/Frontend-React%2019-blue)
