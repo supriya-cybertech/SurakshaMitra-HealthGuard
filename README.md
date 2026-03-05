@@ -1,30 +1,20 @@
-# Surakshamitra Healthguard (Decoupled Architecture)
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-This project has been restructured into a decoupled architecture, separating the client-side front-end application and the server-side backend API.
+# Run and deploy your AI Studio app
 
-## Project Structure
+This contains everything you need to run your app locally.
 
-- `/frontend` - Contains the React 19 application (built with Vite). Uses TypeScript, React Router, and Recharts.
-- `/backend` - Contains the server-side logic and database/API configurations.
+View your app in AI Studio: https://ai.studio/apps/drive/1DZQpSSD7bLePhQlFnQ9mM9D02KcXCTv-
 
-## Running the Application Locally
+## Run Locally
 
-You will need two terminal windows to run both services simultaneously.
+**Prerequisites:**  Node.js
 
-### 1. Setup and Run Backend
-Open a new terminal and navigate to the backend directory:
-```bash
-cd backend
-npm install
-npm run dev
-```
 
-### 2. Setup and Run Frontend
-Open another terminal and navigate to the frontend directory:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-*Note: Make sure to review the `.env` settings inside the respective folders (`frontend` and `backend`) specifically for API keys like your `GEMINI_API_KEY`!*
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
